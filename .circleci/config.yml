@@ -3,7 +3,7 @@ version: 2.1
 jobs:
   test:
     docker:
-      - image: circleci/python:3.8
+      - image: circleci/python:3.8  # Ensure correct Python version
     steps:
       - checkout
       - run:
@@ -11,10 +11,14 @@ jobs:
           command: |
             python -m venv venv
             . venv/bin/activate || source venv/bin/activate
+            pip install --upgrade pip
             pip install -r requirements.txt
+            pip install pytest  # Ensure pytest is installed
       - run:
           name: Run tests
-          command: pytest tests/
+          command: |
+            . venv/bin/activate || source venv/bin/activate
+            pytest tests/
 
 workflows:
   version: 2
